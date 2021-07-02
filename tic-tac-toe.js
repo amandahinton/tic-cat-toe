@@ -1,12 +1,5 @@
-//  REMOVE GLOBAL VARIABLES AND MOVE INTO FUNCTIONS
-    //  DOESN'T MARK WITH CURRENTPLAYER SYMBOL FROM STORAGE
-    // DOES PLAYER VARIABLE PULL UPDATED VALUE WHEN USED
-    // NOT FINDING WINS FROM GAMEARRAY IN STORAGE UNTIL AFTER PRESSING NEW GAME
-
+// NOT FINDING WINS FROM GAMEARRAY IN STORAGE
 // GAMEOVER -> NO SQUARE CAN BE HOVERED OR CLICKED AND EMPHASIZE NEW GAME BUTTON
-
-// GAMESTATE LOOKS LIKE IT IS RESET BUT AFTER MARKING, OLD VALUES COME BACK, DOUBLE CLICKING NEW GAME BUTTON OR REFRESH DOES RESET
-
 
 window.onload = () => {
   window.localStorage.clear();
@@ -15,7 +8,6 @@ window.onload = () => {
   localStorage.setItem("currentPlayer", "x");
   localStorage.setItem("gameOver", "false");
   takeTurn();
-
   clickNewGame()
   clickGiveUp()
 }
@@ -45,15 +37,19 @@ function switchPlayer() {
 function markClickedSquares() {
   let img;
   let squares = document.querySelectorAll("div.square");
-  let player = localStorage.getItem("currentPlayer");
   for (let square of squares) {
     square.addEventListener("click", mark => {
       if (!square.innerHTML) {
-        if (player === "x") img = "<img src='./assets/x-marker.svg'/>";
-        if (player === "o") img = "<img src='./assets/o-marker.svg'/>";
+        let player = localStorage.getItem("currentPlayer");
+        if (player === "x") {
+          img = "<img src='./assets/x-marker.svg'/>";
+        } else {
+          img = "<img src='./assets/o-marker.svg'/>";
+        }
         square.innerHTML = img;
         square.setAttribute("class", "marked")
         markGameArray(square)
+        findWinner()
         switchPlayer();
       } else {
         let message = document.getElementById("headingDiv");
