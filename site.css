@@ -1,0 +1,135 @@
+* {
+  font-family: "Helvetica", sans-serif;
+}
+/* grid container to hold 3 sections: heading, game, buttons */
+#container {
+  display: grid;
+  grid-template-rows: 1fr 4fr 1fr;
+  /* align-items: center;
+  justify-items: center; */
+}
+
+/* top area div for heading (let's play at start; winner at end) */
+#headingDiv {
+  color: rgb(242, 0, 145);
+  font-weight: bold;
+  font-size: 36px;
+  padding: 10px;
+  margin: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* middle area div for 3x3 game board */
+#gameDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* div that contains the 9 playable squares */
+#gameBoard {
+  display: inline-grid;
+  grid-template-rows:30px 100px 100px 100px 30px;
+  grid-template-columns: 30px 100px 100px 100px 30px;
+  grid-template-areas:
+  ". . . . ."
+  ". topLeft topMiddle topRight ."
+  ". centerLeft centerMiddle centerRight ."
+  ". bottomLeft bottomMiddle bottomRight ."
+  ". . . . .";
+}
+
+/* bottom area div for two buttons */
+#buttonsDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* two buttons at bottom */
+#newGameButton,
+#giveUpButton  {
+  background-color: rgb(237, 255, 0);
+  color: black;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  /* box-shadow: 2px 2px 2px 2px rgba(255, 77, 77, .25); */
+  border-radius: 12px;
+  margin-left: 30px;
+  margin-right: 30px;
+  width: 140px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#newGameButton:hover,
+#giveUpButton:hover  {
+  background-color:  rgb(255, 77, 77);
+  color: rgb(237, 255, 0);
+  box-shadow: none;
+}
+
+/* 9 playable squares */
+.square {
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+}
+.square:hover:not(.marked) {
+  background-color: rgb(237, 255, 0);
+}
+
+#topLeft {
+  grid-area: topLeft;
+  border-right: solid 5px rgb(255, 77, 77);
+  border-bottom: solid 5px rgb(255, 77, 77);
+}
+
+#topMiddle {
+  grid-area: topMiddle;
+  border-bottom: solid 5px rgb(255, 77, 77);
+}
+
+#topRight {
+  grid-area: topRight;
+  border-left: solid 5px rgb(255, 77, 77);
+  border-bottom: solid 5px rgb(255, 77, 77);
+}
+
+#centerLeft {
+  grid-area: centerLeft;
+  border-right: solid 5px rgb(255, 77, 77);
+}
+
+#centerMiddle {
+  grid-area: centerMiddle;
+}
+
+#centerRight {
+  grid-area: centerRight;
+  border-left: solid 5px rgb(255, 77, 77);
+}
+
+#bottomLeft {
+  grid-area: bottomLeft;
+  border-top: solid 5px rgb(255, 77, 77);
+  border-right: solid 5px rgb(255, 77, 77);
+}
+
+#bottomMiddle {
+  grid-area: bottomMiddle;
+  border-top: solid 5px rgb(255, 77, 77);
+}
+
+#bottomRight {
+  grid-area: bottomRight;
+  border-top: solid 5px rgb(255, 77, 77);
+  border-left: solid 5px rgb(255, 77, 77);
+}
