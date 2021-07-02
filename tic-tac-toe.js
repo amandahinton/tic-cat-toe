@@ -1,10 +1,9 @@
-//  DOESN'T MARK WITH CURRENTPLAYER SYMBOL FROM STORAGE
-
-// DOES PLAYER VARIABLE PULL UPDATED VALUE WHEN USED
+//  REMOVE GLOBAL VARIABLES AND MOVE INTO FUNCTIONS
+    //  DOESN'T MARK WITH CURRENTPLAYER SYMBOL FROM STORAGE
+    // DOES PLAYER VARIABLE PULL UPDATED VALUE WHEN USED
+    // NOT FINDING WINS FROM GAMEARRAY IN STORAGE UNTIL AFTER PRESSING NEW GAME
 
 // GAMEOVER -> NO SQUARE CAN BE HOVERED OR CLICKED AND EMPHASIZE NEW GAME BUTTON
-
-// NOT FINDING WINS FROM GAMEARRAY IN STORAGE UNTIL AFTER PRESSING NEW GAME
 
 // GAMESTATE LOOKS LIKE IT IS RESET BUT AFTER MARKING, OLD VALUES COME BACK, DOUBLE CLICKING NEW GAME BUTTON OR REFRESH DOES RESET
 
@@ -21,48 +20,44 @@ window.onload = () => {
   clickGiveUp()
 }
 
-
-let MESSAGE = document.getElementById("headingDiv");
-let PLAYER = localStorage.getItem("currentPlayer");
-let GAMEARRAY = JSON.parse(localStorage.getItem("gameState"));
-let GAMEOVER = localStorage.getItem("gameOver");
-
-
 function takeTurn() {
+  let gameOver = localStorage.getItem("gameOver");
   if (!isBoardFull()) {
     markClickedSquares()
     findWinner()
-    if (!GAMEOVER && isBoardFull()) endGame("cat");
-    if (!GAMEOVER && !isBoardFull()) takeTurn();
+    if (!gameOver && isBoardFull()) endGame("cat");
+    if (!gameOver && !isBoardFull()) takeTurn();
   }
 };
 
 function switchPlayer() {
-  if (PLAYER === "o") {
+  let message = document.getElementById("headingDiv");
+  let player = localStorage.getItem("currentPlayer");
+  if (player === "o") {
     localStorage.setItem("currentPlayer", "x");
-    MESSAGE.innerText = "It is x's turn";
+    message.innerText = "It is x's turn";
   } else {
     localStorage.setItem("currentPlayer", "o");
-    MESSAGE.innerText = "It is o's turn";
+    message.innerText = "It is o's turn";
   }
 };
 
 function markClickedSquares() {
   let img;
   let squares = document.querySelectorAll("div.square");
+  let player = localStorage.getItem("currentPlayer");
   for (let square of squares) {
     square.addEventListener("click", mark => {
       if (!square.innerHTML) {
-        console.log(localStorage.getItem("currentPlayer"));
-        if (PLAYER === "x") img = "<img src='./assets/x-marker.svg'/>";
-        if (PLAYER === "o") img = "<img src='./assets/o-marker.svg'/>";
+        if (player === "x") img = "<img src='./assets/x-marker.svg'/>";
+        if (player === "o") img = "<img src='./assets/o-marker.svg'/>";
         square.innerHTML = img;
         square.setAttribute("class", "marked")
         markGameArray(square)
-        console.log(GAMEARRAY);
         switchPlayer();
       } else {
-        MESSAGE.innerText = "Pick an empty spot";
+        let message = document.getElementById("headingDiv");
+        message.innerText = "Pick an empty spot";
       }
     })
   }
@@ -70,55 +65,60 @@ function markClickedSquares() {
 
 
 function markGameArray(square) {
-  if (square.id === "topLeft") GAMEARRAY[0] = PLAYER;
-  if (square.id === "topMiddle") GAMEARRAY[1] = PLAYER;
-  if (square.id === "topRight") GAMEARRAY[2] = PLAYER;
-  if (square.id === "centerLeft") GAMEARRAY[3] = PLAYER;
-  if (square.id === "centerMiddle") GAMEARRAY[4] = PLAYER;
-  if (square.id === "centerRight") GAMEARRAY[5] = PLAYER;
-  if (square.id === "bottomLeft") GAMEARRAY[6] = PLAYER;
-  if (square.id === "bottomMiddle") GAMEARRAY[7] = PLAYER;
-  if (square.id === "bottomRight") GAMEARRAY[8] = PLAYER;
-  localStorage.setItem("gameState", JSON.stringify(GAMEARRAY));
+  let player = localStorage.getItem("currentPlayer");
+  let gameArray = JSON.parse(localStorage.getItem("gameState"));
+  if (square.id === "topLeft") gameArray[0] = player;
+  if (square.id === "topMiddle") gameArray[1] = player;
+  if (square.id === "topRight") gameArray[2] = player;
+  if (square.id === "centerLeft") gameArray[3] = player;
+  if (square.id === "centerMiddle") gameArray[4] = player;
+  if (square.id === "centerRight") gameArray[5] = player;
+  if (square.id === "bottomLeft") gameArray[6] = player;
+  if (square.id === "bottomMiddle") gameArray[7] = player;
+  if (square.id === "bottomRight") gameArray[8] = player;
+  localStorage.setItem("gameState", JSON.stringify(gameArray));
 }
 
 function findWinner() {
+  let gameArray = JSON.parse(localStorage.getItem("gameState"));
   // horizontal wins
-  if (((GAMEARRAY[0] === GAMEARRAY[1]) && (GAMEARRAY[1] === GAMEARRAY[2])) && (GAMEARRAY[0] !== "")) {
-    endGame(GAMEARRAY[0]);
-  } else if (((GAMEARRAY[3] === GAMEARRAY[4]) && (GAMEARRAY[4] === GAMEARRAY[5])) && (GAMEARRAY[3] !== "")) {
-    endGame(GAMEARRAY[3]);
-  } else if (((GAMEARRAY[6] === GAMEARRAY[7]) && (GAMEARRAY[7] === GAMEARRAY[8])) && (GAMEARRAY[6] !== "")) {
-    endGame(GAMEARRAY[6]);
+  if (((gameArray[0] === gameArray[1]) && (gameArray[1] === gameArray[2])) && (gameArray[0] !== "")) {
+    endGame(gameArray[0]);
+  } else if (((gameArray[3] === gameArray[4]) && (gameArray[4] === gameArray[5])) && (gameArray[3] !== "")) {
+    endGame(gameArray[3]);
+  } else if (((gameArray[6] === gameArray[7]) && (gameArray[7] === gameArray[8])) && (gameArray[6] !== "")) {
+    endGame(gameArray[6]);
   }
   // vertical wins
-  else if (((GAMEARRAY[0] === GAMEARRAY[3]) && (GAMEARRAY[3] === GAMEARRAY[6])) && (GAMEARRAY[0] !== "")) {
-    endGame(GAMEARRAY[0]);
-  } else if (((GAMEARRAY[1] === GAMEARRAY[4]) && (GAMEARRAY[4] === GAMEARRAY[7])) && (GAMEARRAY[1] !== "")) {
-    endGame(GAMEARRAY[1]);
-  } else if (((GAMEARRAY[6] === GAMEARRAY[7]) && (GAMEARRAY[7] === GAMEARRAY[8])) && (GAMEARRAY[6] !== "")) {
-    endGame(GAMEARRAY[6]);
+  else if (((gameArray[0] === gameArray[3]) && (gameArray[3] === gameArray[6])) && (gameArray[0] !== "")) {
+    endGame(gameArray[0]);
+  } else if (((gameArray[1] === gameArray[4]) && (gameArray[4] === gameArray[7])) && (gameArray[1] !== "")) {
+    endGame(gameArray[1]);
+  } else if (((gameArray[6] === gameArray[7]) && (gameArray[7] === gameArray[8])) && (gameArray[6] !== "")) {
+    endGame(gameArray[6]);
   }
   // diagonal wins
-  else if (((GAMEARRAY[0] === GAMEARRAY[4]) && (GAMEARRAY[4] === GAMEARRAY[8])) && (GAMEARRAY[0] !== "")) {
-    endGame(GAMEARRAY[0]);
-  } else if (((GAMEARRAY[2] === GAMEARRAY[4]) && (GAMEARRAY[4] === GAMEARRAY[6])) && (GAMEARRAY[2] !== "")) {
-    endGame(GAMEARRAY[2]);
+  else if (((gameArray[0] === gameArray[4]) && (gameArray[4] === gameArray[8])) && (gameArray[0] !== "")) {
+    endGame(gameArray[0]);
+  } else if (((gameArray[2] === gameArray[4]) && (gameArray[4] === gameArray[6])) && (gameArray[2] !== "")) {
+    endGame(gameArray[2]);
   }
 }
 
 function isBoardFull() {
-  for (let spot of GAMEARRAY) {
+  let gameArray = JSON.parse(localStorage.getItem("gameState"));
+  for (let spot of gameArray) {
     if (spot === "") return false;
   }
   return true;
 }
 
 function endGame(winner) {
+  let message = document.getElementById("headingDiv");
   if (winner === "o" || winner === "x") {
-    MESSAGE.innerText = "And the winner is... " + winner;
+    message.innerText = "And the winner is... " + winner;
   } else {
-    MESSAGE.innerText = "It's a tie";
+    message.innerText = "It's a tie";
   }
   localStorage.setItem("gameOver", "true");
 }
@@ -127,19 +127,18 @@ function clickNewGame() {
   let newGameButton = document.getElementById("newGameButton");
   newGameButton.addEventListener("click", e => {
     location.reload();
-    // localStorage.removeItem("gameState");
-    // localStorage.removeItem("currentPlayer");
-    // localStorage.removeItem("gameOver");
   });
 }
 
 function clickGiveUp() {
+  let message = document.getElementById("headingDiv");
+  let player = localStorage.getItem("currentPlayer");
   let giveUpButton = document.getElementById("giveUpButton");
   giveUpButton.addEventListener("click", e => {
-    if (PLAYER === "o") {
-      MESSAGE = "Forfeit by o, so x wins!"
+    if (player === "o") {
+      message = "Forfeit by o, so x wins!"
     } else {
-      MESSAGE = "Forfeit by x, so o wins!"
+      message = "Forfeit by x, so o wins!"
     }
   });
 }
