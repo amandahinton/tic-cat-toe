@@ -4,7 +4,7 @@
   "description": "tic tac toe",
   "main": "tic-tac-toe.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node tic-tac-toe.js"
   },
   "repository": {
     "type": "git",
