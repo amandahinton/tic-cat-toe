@@ -149,8 +149,13 @@
     font-size: 24px;
     padding: 0px;
     margin: 0px;
+    /* width: 100% */
   }
   #container {
     grid-template-rows: .5fr 4fr .5fr;
+     width: 100%;
   }
+  /* #gameBoard, #buttonsDiv {
+    width: 100%
+  } */
 }
