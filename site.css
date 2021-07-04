@@ -11,7 +11,7 @@
 
 /* top area div for heading (let's play at start; winner at end) */
 #headingDiv {
-  color: rgb(242, 0, 145);
+  color: rgb(255, 77, 77);
   font-weight: bold;
   font-size: 36px;
   padding: 10px;
@@ -52,7 +52,7 @@
 #newGameButton,
 #giveUpButton  {
   background-color: rgb(237, 255, 0);
-  color: black;
+  color: rgb(242, 0, 145);
   font-size: 16px;
   font-weight: bold;
   border: none;
@@ -69,7 +69,7 @@
 
 #newGameButton:hover,
 #giveUpButton:hover  {
-  background-color:  rgb(255, 77, 77);
+  background-color:  rgb(242, 0, 145);
   color: rgb(237, 255, 0);
   box-shadow: none;
 }

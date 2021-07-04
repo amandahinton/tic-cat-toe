@@ -56,6 +56,7 @@ function markClickedSquares() {
         let message = document.getElementById("headingDiv");
         message.innerText = "Pick an empty spot";
       }
+      
     })
   }
 };
