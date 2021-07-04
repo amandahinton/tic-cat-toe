@@ -142,3 +142,15 @@
   border-top: solid 5px rgb(255, 77, 77);
   border-left: solid 5px rgb(255, 77, 77);
 }
+
+
+@media screen and (max-height: 900px) {
+  #headingDiv {
+    font-size: 24px;
+    padding: 0px;
+    margin: 0px;
+  }
+  #container {
+    grid-template-rows: .5fr 4fr .5fr;
+  }
+}
