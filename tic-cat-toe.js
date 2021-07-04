@@ -78,23 +78,19 @@ function markGameArray(square) {
 function findWinner() {
   let gameArray = JSON.parse(localStorage.getItem("gameState"));
   // horizontal wins
-  if (((gameArray[0] === gameArray[1]) && (gameArray[1] === gameArray[2])) && (gameArray[0] !== "")) {
-    endGame(gameArray[0]);
-  } else if (((gameArray[3] === gameArray[4]) && (gameArray[4] === gameArray[5])) && (gameArray[3] !== "")) {
-    endGame(gameArray[3]);
-  } else if (((gameArray[6] === gameArray[7]) && (gameArray[7] === gameArray[8])) && (gameArray[6] !== "")) {
-    endGame(gameArray[6]);
+  for (let i = 0; i < 9; i += 3) {
+    if (((gameArray[i] === gameArray[i+1]) && (gameArray[i+1] === gameArray[i+2])) && (gameArray[i] !== "")) {
+      endGame(gameArray[i]);
+    }
   }
   // vertical wins
-  else if (((gameArray[0] === gameArray[3]) && (gameArray[3] === gameArray[6])) && (gameArray[0] !== "")) {
-    endGame(gameArray[0]);
-  } else if (((gameArray[1] === gameArray[4]) && (gameArray[4] === gameArray[7])) && (gameArray[1] !== "")) {
-    endGame(gameArray[1]);
-  } else if (((gameArray[6] === gameArray[7]) && (gameArray[7] === gameArray[8])) && (gameArray[6] !== "")) {
-    endGame(gameArray[6]);
+  for (let i = 0; i < 3; i++) {
+    if (((gameArray[i] === gameArray[i + 3]) && (gameArray[i + 3] === gameArray[i + 6])) && (gameArray[i] !== "")) {
+      endGame(gameArray[i]);
+    }
   }
   // diagonal wins
-  else if (((gameArray[0] === gameArray[4]) && (gameArray[4] === gameArray[8])) && (gameArray[0] !== "")) {
+  if (((gameArray[0] === gameArray[4]) && (gameArray[4] === gameArray[8])) && (gameArray[0] !== "")) {
     endGame(gameArray[0]);
   } else if (((gameArray[2] === gameArray[4]) && (gameArray[4] === gameArray[6])) && (gameArray[2] !== "")) {
     endGame(gameArray[2]);
