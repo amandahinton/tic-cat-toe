@@ -7,9 +7,10 @@ window.onload = () => {
   localStorage.setItem("gameState", JSON.stringify(gameState));
   localStorage.setItem("currentPlayer", "x");
   localStorage.setItem("gameOver", "false");
+  localStorage.setItem("winner", "false");
   takeTurn();
-  clickNewGame()
-  clickGiveUp()
+  clickNewGame();
+  clickGiveUp();
 }
 
 function takeTurn() {
@@ -110,13 +111,15 @@ function isBoardFull() {
 }
 
 function endGame(winner) {
+  localStorage.setItem("gameOver", "true");
+  localStorage.setItem("winner", winner);
+
   let message = document.getElementById("headingDiv");
   if (winner === "o" || winner === "x") {
     message.innerText = "And the winner is... " + winner;
   } else {
     message.innerText = "It's a tie";
   }
-  localStorage.setItem("gameOver", "true");
 }
 
 function clickNewGame() {
@@ -128,13 +131,15 @@ function clickNewGame() {
 
 function clickGiveUp() {
   let message = document.getElementById("headingDiv");
-  let player = localStorage.getItem("currentPlayer");
   let giveUpButton = document.getElementById("giveUpButton");
+  localStorage.setItem("gameOver", "true");
+
   giveUpButton.addEventListener("click", e => {
+    let player = localStorage.getItem("currentPlayer");
     if (player === "o") {
-      message = "Forfeit by o, so x wins!"
-    } else {
-      message = "Forfeit by x, so o wins!"
+      message.innerText = "Forfeit by o, so x wins!";
+    } else if (player === "x") {
+      message.innerText = "Forfeit by x, so o wins!";
     }
   });
 }
