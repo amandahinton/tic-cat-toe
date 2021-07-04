@@ -1,5 +1,6 @@
 * {
-  font-family: "Helvetica", sans-serif;
+  font-family: "Inter", sans-serif;
+  font-weight: bold;
 }
 /* grid container to hold 3 sections: heading, game, buttons */
 #container {
@@ -68,19 +69,27 @@
 }
 
 #newGameButton:hover,
-#giveUpButton:hover  {
+#giveUpButton:hover:not(.disabled)  {
   background-color:  rgb(242, 0, 145);
   color: rgb(237, 255, 0);
   box-shadow: none;
 }
 
+#giveUpButton.disabled  {
+  display: none;
+}
+
+.cat {
+  display: block;
+  margin: 5px;
+}
+
+
 /* 9 playable squares */
 .square {
-  background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-
 }
 .square:hover:not(.marked) {
   background-color: rgb(237, 255, 0);
