@@ -1,27 +1,14 @@
-// NOT FINDING WINS FROM GAMEARRAY IN STORAGE
-// GAMEOVER -> NO SQUARE CAN BE HOVERED OR CLICKED AND EMPHASIZE NEW GAME BUTTON
-
 window.onload = () => {
   window.localStorage.clear();
   let gameState = ['', '', '', '', '', '', '', '', ''];
   localStorage.setItem("gameState", JSON.stringify(gameState));
   localStorage.setItem("currentPlayer", "x");
-  localStorage.setItem("gameOver", "false");
-  localStorage.setItem("winner", "false");
-  takeTurn();
+  localStorage.setItem("gameOver", "no");
+  localStorage.setItem("winner", "no");
+  markClickedSquares()
   clickNewGame();
   clickGiveUp();
 }
-
-function takeTurn() {
-  let gameOver = localStorage.getItem("gameOver");
-  if (!isBoardFull()) {
-    markClickedSquares()
-    findWinner()
-    if (!gameOver && isBoardFull()) endGame("cat");
-    if (!gameOver && !isBoardFull()) takeTurn();
-  }
-};
 
 function switchPlayer() {
   let message = document.getElementById("headingDiv");
@@ -39,28 +26,39 @@ function markClickedSquares() {
   let img;
   let squares = document.querySelectorAll("div.square");
   for (let square of squares) {
-    square.addEventListener("click", mark => {
-      if (!square.innerHTML) {
+
+    square.addEventListener("click", e => {
+      let gameOver = localStorage.getItem("gameOver");
+      if(gameOver === "yes") return; // don't listen if game is over
+
+      if (!square.innerHTML) { // if the clicked square is empty
         let player = localStorage.getItem("currentPlayer");
         if (player === "x") {
-          img = "<img src='./assets/x-marker.svg'/>";
+          // img = "<img src='./assets/x-marker.svg'/>"; // x-character
+          img = "<img class='cat' src='./assets/x-cat.png'/>"; // x-cat
         } else {
-          img = "<img src='./assets/o-marker.svg'/>";
+          // img = "<img src='./assets/o-marker.svg'/>"; // o-character
+          img = "<img class='cat' src='./assets/o-cat.png'/>"; // o-cat
         }
-        square.innerHTML = img;
-        square.setAttribute("class", "marked")
-        markGameArray(square)
-        findWinner()
-        switchPlayer();
-      } else {
+        square.innerHTML = img; // mark the browswer game board
+        square.setAttribute("class", "marked") // remove hoverablility on square
+        markGameArray(square) // mark the local storage game state array
+
+        findWinner(); // use game state to check for winner
+
+        let gameOver = localStorage.getItem("gameOver"); // keep playing
+        if (gameOver === "no") switchPlayer();
+
+      } else { // if square already marked
         let message = document.getElementById("headingDiv");
         message.innerText = "Pick an empty spot";
       }
-      
-    })
+
+    });
+
+
   }
 };
-
 
 function markGameArray(square) {
   let player = localStorage.getItem("currentPlayer");
@@ -75,7 +73,7 @@ function markGameArray(square) {
   if (square.id === "bottomMiddle") gameArray[7] = player;
   if (square.id === "bottomRight") gameArray[8] = player;
   localStorage.setItem("gameState", JSON.stringify(gameArray));
-}
+};
 
 function findWinner() {
   let gameArray = JSON.parse(localStorage.getItem("gameState"));
@@ -101,7 +99,10 @@ function findWinner() {
   } else if (((gameArray[2] === gameArray[4]) && (gameArray[4] === gameArray[6])) && (gameArray[2] !== "")) {
     endGame(gameArray[2]);
   }
-}
+  // board is full + no winner = tie
+  let gameOver = localStorage.getItem("gameOver");
+  if (gameOver === "no" && isBoardFull()) endGame("cat");
+};
 
 function isBoardFull() {
   let gameArray = JSON.parse(localStorage.getItem("gameState"));
@@ -109,38 +110,47 @@ function isBoardFull() {
     if (spot === "") return false;
   }
   return true;
-}
+};
 
 function endGame(winner) {
-  localStorage.setItem("gameOver", "true");
+  localStorage.setItem("gameOver", "yes");
   localStorage.setItem("winner", winner);
-
   let message = document.getElementById("headingDiv");
   if (winner === "o" || winner === "x") {
     message.innerText = "And the winner is... " + winner;
   } else {
     message.innerText = "It's a tie";
   }
-}
+  stopGamePlay();
+};
+
+function stopGamePlay() {
+  let squares = document.querySelectorAll("div.square");
+  for (let square of squares) {
+    square.setAttribute("class", "marked");
+  } // no square is hoverable
+  let giveUpButton = document.getElementById("giveUpButton");
+  giveUpButton.setAttribute("class", "disabled");
+};
 
 function clickNewGame() {
   let newGameButton = document.getElementById("newGameButton");
   newGameButton.addEventListener("click", e => {
     location.reload();
   });
-}
+};
 
 function clickGiveUp() {
-  let message = document.getElementById("headingDiv");
   let giveUpButton = document.getElementById("giveUpButton");
-  localStorage.setItem("gameOver", "true");
-
   giveUpButton.addEventListener("click", e => {
+    let message = document.getElementById("headingDiv");
+    localStorage.setItem("gameOver", "yes");
     let player = localStorage.getItem("currentPlayer");
     if (player === "o") {
       message.innerText = "Forfeit by o, so x wins!";
     } else if (player === "x") {
       message.innerText = "Forfeit by x, so o wins!";
     }
+    stopGamePlay();
   });
-}
+};
