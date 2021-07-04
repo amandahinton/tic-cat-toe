@@ -1,13 +1,14 @@
 * {
   font-family: "Inter", sans-serif;
   font-weight: bold;
+  border: 3px solid red;
 }
+
 /* grid container to hold 3 sections: heading, game, buttons */
 #container {
   display: grid;
   grid-template-rows: 1fr 4fr 1fr;
-  /* align-items: center;
-  justify-items: center; */
+  width: 100%;
 }
 
 /* top area div for heading (let's play at start; winner at end) */
@@ -16,7 +17,7 @@
   font-weight: bold;
   font-size: 36px;
   padding: 10px;
-  margin: 10px;
+  /* margin: 10px; */
   display: flex;
   align-items: center;
   justify-content: center;
@@ -149,13 +150,24 @@
     font-size: 24px;
     padding: 0px;
     margin: 0px;
-    /* width: 100% */
   }
   #container {
     grid-template-rows: .5fr 4fr .5fr;
-     width: 100%;
   }
-  /* #gameBoard, #buttonsDiv {
-    width: 100%
-  } */
+
+  #newGameButton,
+  #giveUpButton  {
+    background-color: rgb(237, 255, 0);
+    color: rgb(242, 0, 145);
+    font-size: 14px;
+    font-weight: bold;
+    width: 120px;
+    height: 35px;
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  #gameBoard {
+  grid-template-columns: 5px 100px 100px 100px 5px;
+  }
 }
