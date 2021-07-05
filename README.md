@@ -1,4 +1,4 @@
 
 ## https://ticcattoe.herokuapp.com/
 
-![alt text](./assets/ticcattoe.png)
+![alt text](./public_html/assets/ticcattoe.png)
