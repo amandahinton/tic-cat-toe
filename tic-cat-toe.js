@@ -34,11 +34,11 @@ function markClickedSquares() {
       if (!square.innerHTML) { // if the clicked square is empty
         let player = localStorage.getItem("currentPlayer");
         if (player === "x") {
-          // img = "<img src='./assets/x-marker.svg'/>"; // x-character
-          img = "<img class='cat' src='./assets/x-cat.png'/>"; // x-cat
+          // img = "<img src='./public/x-marker.svg'/>"; // x-character
+          img = "<img class='cat' src='./public/x-cat.png'/>"; // x-cat
         } else {
-          // img = "<img src='./assets/o-marker.svg'/>"; // o-character
-          img = "<img class='cat' src='./assets/o-cat.png'/>"; // o-cat
+          // img = "<img src='./public/o-marker.svg'/>"; // o-character
+          img = "<img class='cat' src='./public/o-cat.png'/>"; // o-cat
         }
         square.innerHTML = img; // mark the browswer game board
         square.setAttribute("class", "marked") // remove hoverablility on square
