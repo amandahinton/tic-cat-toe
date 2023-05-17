@@ -67,13 +67,13 @@
 }
 
 #newGameButton:hover,
-#giveUpButton:hover:not(.disabled)  {
+#giveUpButton:hover:not(.hidden)  {
   background-color:  rgb(242, 0, 145);
   color: rgb(237, 255, 0);
   box-shadow: none;
 }
 
-#giveUpButton.disabled  {
+#giveUpButton.hidden  {
   display: none;
 }
 
