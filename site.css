@@ -1,13 +1,18 @@
 * {
   font-family: "Inter", sans-serif;
   font-weight: bold;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0px;
 }
 
 /* grid container to hold 3 sections: heading, game, buttons */
 #container {
   display: grid;
   grid-template-rows: 1fr 4fr 1fr;
-  width: 100%;
+  padding: 10px;
 }
 
 /* top area div for heading (let's play at start; winner at end) */
@@ -15,7 +20,7 @@
   color: rgb(255, 77, 77);
   font-weight: bold;
   font-size: 36px;
-  padding: 10px;
+  padding-bottom: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -31,14 +36,12 @@
 /* div that contains the 9 playable squares */
 #gameBoard {
   display: inline-grid;
-  grid-template-rows:30px 100px 100px 100px 30px;
-  grid-template-columns: 30px 100px 100px 100px 30px;
+  grid-template-rows: repeat(3, 100px);
+  grid-template-columns: repeat(3, 100px);
   grid-template-areas:
-  ". . . . ."
-  ". topLeft topMiddle topRight ."
-  ". centerLeft centerMiddle centerRight ."
-  ". bottomLeft bottomMiddle bottomRight ."
-  ". . . . .";
+    "topLeft topMiddle topRight"
+    "centerLeft centerMiddle centerRight"
+    "bottomLeft bottomMiddle bottomRight";
 }
 
 /* bottom area div for two buttons */
@@ -46,11 +49,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding-top: 30px;
 }
 
 /* two buttons at bottom */
 #newGameButton,
-#giveUpButton  {
+#giveUpButton {
   background-color: rgb(237, 255, 0);
   color: rgb(242, 0, 145);
   font-size: 16px;
@@ -67,13 +71,13 @@
 }
 
 #newGameButton:hover,
-#giveUpButton:hover:not(.hidden)  {
-  background-color:  rgb(242, 0, 145);
+#giveUpButton:hover:not(.hidden) {
+  background-color: rgb(242, 0, 145);
   color: rgb(237, 255, 0);
   box-shadow: none;
 }
 
-#giveUpButton.hidden  {
+#giveUpButton.hidden {
   display: none;
 }
 
@@ -81,7 +85,6 @@
   display: block;
   margin: 5px;
 }
-
 
 /* 9 playable squares */
 .square {
@@ -141,19 +144,17 @@
   border-left: solid 5px rgb(255, 77, 77);
 }
 
+@media screen and (max-height: 900px), screen and (max-width: 400px) {
+  #container {
+    grid-template-rows: 0.5fr 4fr 0.5fr;
+  }
 
-@media screen and (max-height: 900px) {
   #headingDiv {
     font-size: 24px;
-    padding: 0px;
-    margin: 0px;
-  }
-  #container {
-    grid-template-rows: .5fr 4fr .5fr;
   }
 
   #newGameButton,
-  #giveUpButton  {
+  #giveUpButton {
     background-color: rgb(237, 255, 0);
     color: rgb(242, 0, 145);
     font-size: 14px;
@@ -163,8 +164,16 @@
     margin-left: 5px;
     margin-right: 5px;
   }
+}
 
+@media screen and (max-width: 320px) {
   #gameBoard {
-  grid-template-columns: 5px 100px 100px 100px 5px;
+    grid-template-rows: repeat(3, 80px);
+    grid-template-columns: repeat(3, 80px);
+  }
+
+  .cat {
+    height: 70px;
+    width: 70px;
   }
 }
