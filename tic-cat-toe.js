@@ -1,6 +1,6 @@
 let game = {
   gameState: ["", "", "", "", "", "", "", "", ""],
-  currentPlayer: "x",
+  currentPlayer: "X",
   gameOver: false,
   winner: false,
 };
@@ -8,17 +8,16 @@ let game = {
 window.onload = () => {
   enableSquares();
   enableNewGame();
-  enableForfeit();
 };
 
 function switchPlayer() {
   let message = document.getElementById("headingDiv");
-  if (game.currentPlayer === "o") {
-    game.currentPlayer = "x";
-    message.innerText = "It is x's turn";
+  if (game.currentPlayer === "O") {
+    game.currentPlayer = "X";
+    message.innerText = "It is X's turn";
   } else {
-    game.currentPlayer = "o";
-    message.innerText = "It is o's turn";
+    game.currentPlayer = "O";
+    message.innerText = "It is O's turn";
   }
 }
 
@@ -31,7 +30,7 @@ function enableSquares() {
       if (!square.innerHTML) {
         // if square is available
         square.innerHTML =
-          game.currentPlayer === "x"
+          game.currentPlayer === "X"
             ? "<img class='cat' src='./public/x-cat.png'/>"
             : "<img class='cat' src='./public/o-cat.png'/>";
 
@@ -116,11 +115,13 @@ function endGame(winner) {
   game.gameOver = true;
   game.winner = winner;
   let message = document.getElementById("headingDiv");
-  if (winner === "o" || winner === "x") {
-    message.innerText = "And the winner is... " + winner;
+
+  if (winner === "O" || winner === "X") {
+    message.innerText = winner + " wins!";
   } else {
     message.innerText = "It's a tie";
   }
+
   stopGamePlay();
 }
 
@@ -129,28 +130,11 @@ function stopGamePlay() {
   for (let square of squares) {
     square.setAttribute("class", "marked");
   } // no square is hoverable
-
-  let giveUpButton = document.getElementById("giveUpButton");
-  giveUpButton.setAttribute("class", "hidden");
 }
 
 function enableNewGame() {
   let newGameButton = document.getElementById("newGameButton");
   newGameButton.addEventListener("click", (e) => {
     location.reload();
-  });
-}
-
-function enableForfeit() {
-  let giveUpButton = document.getElementById("giveUpButton");
-  giveUpButton.addEventListener("click", (e) => {
-    game.gameOver = true;
-    let message = document.getElementById("headingDiv");
-    message.innerText =
-      game.currentPlayer === "o"
-        ? "Forfeit by o, so x wins!"
-        : "Forfeit by x, so o wins!";
-
-    stopGamePlay();
   });
 }
