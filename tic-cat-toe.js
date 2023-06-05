@@ -31,8 +31,8 @@ function enableSquares() {
         // if square is available
         square.innerHTML =
           game.currentPlayer === "X"
-            ? "<img class='cat' src='./public/x-cat.png'/>"
-            : "<img class='cat' src='./public/o-cat.png'/>";
+            ? "<img class='cat' src='./x-cat.png'/>"
+            : "<img class='cat' src='./o-cat.png'/>";
 
         square.setAttribute("class", "marked"); // remove hoverablility on square
 
