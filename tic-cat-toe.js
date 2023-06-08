@@ -1,17 +1,31 @@
-let game = {
+const game = {
   gameState: ["", "", "", "", "", "", "", "", ""],
   currentPlayer: "X",
   gameOver: false,
   winner: false,
+  onePlayer: false,
 };
+
+const SQUARES = [
+  "topLeft",
+  "topMiddle",
+  "topRight",
+  "centerLeft",
+  "centerMiddle",
+  "centerRight",
+  "bottomLeft",
+  "bottomMiddle",
+  "bottomRight",
+];
 
 window.onload = () => {
   enableSquares();
   enableNewGame();
+  enablePlayerToggle();
 };
 
 function switchPlayer() {
-  let message = document.getElementById("headingDiv");
+  const message = document.getElementById("headingDiv");
   if (game.currentPlayer === "O") {
     game.currentPlayer = "X";
     message.innerText = "It is X's turn";
@@ -22,10 +36,13 @@ function switchPlayer() {
 }
 
 function enableSquares() {
-  let squares = document.querySelectorAll("div.square");
+  const squares = document.querySelectorAll("div.square");
   for (let square of squares) {
     square.addEventListener("click", (e) => {
       if (game.gameOver) return; // don't listen if game is over
+
+      const playerToggle = document.getElementById("playerToggle");
+      playerToggle.setAttribute("class", "hidden"); // hide button after first mark
 
       if (!square.innerHTML) {
         // if square is available
@@ -40,28 +57,55 @@ function enableSquares() {
 
         findWinner();
 
-        if (!game.gameOver) switchPlayer();
+        if (!game.gameOver) {
+          switchPlayer();
+          if (game.onePlayer) {
+            const container = document.getElementById("container");
+            container.setAttribute("class", "locked");
+
+            setTimeout(() => {
+              takeComputerTurn();
+              container.removeAttribute("class", "locked");
+            }, 500);
+          }
+        }
       } else {
-        let message = document.getElementById("headingDiv");
+        const message = document.getElementById("headingDiv");
         message.innerText = "Pick an empty spot";
       }
     });
   }
 }
 
+function takeComputerTurn() {
+  const availableSpots = [];
+  for (let i in game.gameState) {
+    if (!game.gameState[i]) {
+      availableSpots.push(i);
+    }
+  }
+
+  const randomSpot = Math.floor(Math.random() * availableSpots.length);
+  const computerPlay = availableSpots[randomSpot];
+
+  game.gameState[computerPlay] = "O";
+
+  markBoard(computerPlay);
+
+  findWinner();
+
+  if (!game.gameOver) switchPlayer();
+}
+
+function markBoard(index) {
+  const squareId = SQUARES[index];
+  const square = document.getElementById(squareId);
+  square.innerHTML = "<img class='cat' src='./o-cat.png'/>";
+  square.setAttribute("class", "marked");
+}
+
 function markGameArray(id) {
-  const squares = [
-    "topLeft",
-    "topMiddle",
-    "topRight",
-    "centerLeft",
-    "centerMiddle",
-    "centerRight",
-    "bottomLeft",
-    "bottomMiddle",
-    "bottomRight",
-  ];
-  const position = squares.indexOf(id);
+  const position = SQUARES.indexOf(id);
   game.gameState[position] = game.currentPlayer;
 }
 
@@ -126,15 +170,25 @@ function endGame(winner) {
 }
 
 function stopGamePlay() {
-  let squares = document.querySelectorAll("div.square");
+  const squares = document.querySelectorAll("div.square");
   for (let square of squares) {
     square.setAttribute("class", "marked");
   } // no square is hoverable
 }
 
 function enableNewGame() {
-  let newGameButton = document.getElementById("newGameButton");
+  const newGameButton = document.getElementById("newGameButton");
   newGameButton.addEventListener("click", (e) => {
     location.reload();
+  });
+}
+
+function enablePlayerToggle() {
+  const playerToggle = document.getElementById("playerToggle");
+  playerToggle.addEventListener("click", (e) => {
+    game.onePlayer = !game.onePlayer;
+    playerToggle.innerText = game.onePlayer
+      ? "Switch to Two-Player"
+      : "Switch to One-Player";
   });
 }
